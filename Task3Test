@@ -1,0 +1,65 @@
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.Select;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+public class Task3Test {
+
+    public static String url = "https://www.google.com/";
+
+    public static void main(String[] args) {
+
+        ChromeOptions chromeOptions = new ChromeOptions();
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver(chromeOptions);
+
+        driver.get(url);
+
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        driver.manage().window().maximize();
+
+        WebElement firstCookiesButton = driver.findElement(By.id("L2AGLb"));
+        firstCookiesButton.click();
+
+        WebElement searchInput = driver.findElement(By.xpath("//*[@name='q']"));
+        searchInput.sendKeys("HTML select tag - W3Schools");
+
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        WebElement luckyButtonSearch = driver.findElement(By.xpath("//input[@class='RNmpXc']"));
+        luckyButtonSearch.click();
+
+        WebElement secondCookiesButton = driver.findElement(By.id("accept-choices"));
+        secondCookiesButton.click();
+
+        WebElement tryItYourselfButton = driver.findElement(By.xpath("//div[@class='w3-example'][1]//a"));
+        tryItYourselfButton.click();
+
+        ArrayList<String> tabs2 = new ArrayList<String>(driver.getWindowHandles());
+
+        driver.switchTo().window(tabs2.get(1));
+
+        driver.switchTo().frame("iframeResult");
+
+        Select chooseCars = new Select(driver.findElement(By.id("cars")));
+        chooseCars.selectByVisibleText("Opel");
+
+        WebElement opelBrand = driver.findElement(By.id("cars"));
+
+        List<WebElement> opelData = opelBrand.findElements(By.xpath("//*[@id=\"cars\"]/option[3]"));
+        for (WebElement e : opelData) {
+            System.out.println("(" + e.getText() + "," + e.getAttribute("value") + ")");
+        }
+
+        driver.quit();
+
+    }
+}
