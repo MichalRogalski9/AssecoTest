@@ -1,0 +1,36 @@
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+import java.util.List;
+
+public class Task2Test {
+
+    public static String Url = "https://pl.wikipedia.org/wiki/Wiki";
+
+    public static void main(String[] args) {
+
+        ChromeOptions chromeOptions = new ChromeOptions();
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver(chromeOptions);
+
+        driver.get(Url);
+
+        driver.manage().window().maximize();
+
+        WebElement englishUrl = driver.findElement(By.xpath("//a[@href='https://en.wikipedia.org/wiki/Wiki']"));
+
+        List<WebElement> allLanguage = driver.findElements(By.xpath("//*[@id='p-lang']//ul"));
+
+        for (WebElement lang : allLanguage) {
+            System.out.println(lang.getText());
+            System.out.println("English url: " + englishUrl.getAttribute("href"));
+        }
+
+        driver.quit();
+
+    }
+}
